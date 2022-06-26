@@ -59,7 +59,12 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">Estado</label>
-                                <input v-model="form.state" type="text" class="form-control rounded" required>
+                                <select v-model="form.state" class="form-select rounded" aria-label="Default select example" required>
+                                    <option selected></option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
                             </div>
                         </div>
 
