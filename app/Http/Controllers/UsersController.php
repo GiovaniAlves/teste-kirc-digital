@@ -133,10 +133,17 @@ class UsersController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $address = Address::where('user_id', $user->id)->first();
+
+        City::destroy($address->city_id);
+        //Destruindo a cidade ou o usuário já destruo o endereço por conta dos relacionamentos.
+        $user->delete();
+
+        return Redirect::back()->with('message', 'Usuário Deletado com Sucesso!');
     }
 }

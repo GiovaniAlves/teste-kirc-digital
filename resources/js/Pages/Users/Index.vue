@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <Link :href="route('users.edit', {id: user.id})" class="btn btn-success btn-sm ml-1"><i class="bi bi-pencil"></i> Editar</Link>
-                        <button class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
+                        <button @click.prevent="deleteUser(user.id)" class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
                         <button class="btn btn-secondary btn-sm ml-1"><i class="bi bi-dash"></i> Desativar</button>
                         <button class="btn btn-success btn-sm ml-1"><i class="bi bi-bookmark-check"></i> Ativar
                         </button>
@@ -89,6 +89,7 @@
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3'
 import {computed} from "vue"
+import {Inertia} from "@inertiajs/inertia";
 
 const props = defineProps({
     users: Object
@@ -100,5 +101,11 @@ const links = computed(() => {
     cleanLinks.shift()
     return cleanLinks
 })
+
+function deleteUser(id) {
+    if (confirm('Deseja realmente excluir?')) {
+        Inertia.delete(route('users.destroy', {id: id}))
+    }
+}
 
 </script>
