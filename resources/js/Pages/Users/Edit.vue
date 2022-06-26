@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Cadastro">
+    <AppLayout title="Atualização">
         <div class="card">
             <div class="card-header">
-                <h3>Cadastro</h3>
+                <h3>Atualização</h3>
             </div>
             <div class="card-body">
 
@@ -103,7 +103,7 @@
 
                     </div>
 
-                    <button type="submit" class="btn btn-outline-primary font-semibold">Cadastrar</button>
+                    <button type="submit" class="btn btn-outline-primary font-semibold">Editar</button>
                 </form>
             </div>
         </div>
@@ -115,26 +115,39 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import {Inertia} from "@inertiajs/inertia"
 import {ref} from "vue"
 
-defineProps({
+const props = defineProps({
     states: Array,
+    user: Object,
     errors: Object
 })
 
 const form = ref({
-    name: '',
-    email: '',
-    cpf: '',
-    street: '',
-    number: '',
-    district: '',
-    city: '',
-    state: '',
-    cep: '',
-    payment: false,
+    name: props.user.name,
+    email: props.user.email,
+    cpf: props.user.cpf,
+    street: props.user.street,
+    number: props.user.number,
+    district: props.user.district,
+    city: props.user.city,
+    state: props.user.state,
+    cep: props.user.cep,
+    payment: !!props.user.payment,
 })
 
 function submit() {
-    Inertia.post(route('users.store'), form.value)
+    Inertia.post(route('users.update', {id: props.user.id}), {
+        _method: 'put',
+        name: form.value.name,
+        email: form.value.email,
+        cpf: form.value.cpf,
+        street: form.value.street,
+        number: form.value.number,
+        district: form.value.district,
+        city: form.value.city,
+        state: form.value.state,
+        cep: form.value.cep,
+        payment: form.value.payment,
+    })
 }
 
 </script>
