@@ -1,5 +1,11 @@
 <template>
+    <div v-if="$page.props.flash.message" class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        {{ $page.props.flash.message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
     <div class="card">
+
         <div class="card-header">
             <Link class="btn btn-primary" :href="route('users.create')" >Cadastrar Usuário</Link>
         </div>

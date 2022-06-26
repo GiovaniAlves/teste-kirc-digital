@@ -5,65 +5,81 @@
                 <h3>Cadastro</h3>
             </div>
             <div class="card-body">
-                <form>
+
+                <div
+                    v-if="errors"
+                    v-for="(error, index) in errors"
+                    :key="index"
+                    class="text-danger d-flex justify-content-center" >
+                    {{ error }}
+                </div>
+
+                <form @submit.prevent="submit">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Nome</label>
-                                <input v-model="form.name" type="text" class="form-control rounded" required>
+                                <input v-model="form.name" name="name" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input v-model="form.email" type="email" class="form-control rounded" required>
+                                <input v-model="form.email" name="email" type="email" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">CPF</label>
-                                <input v-model="form.cpf" type="text" class="form-control rounded" required>
+                                <input type="text" name="cpf" v-mask="'000.000.000-00'" v-model="form.cpf" class="form-control rounded">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Rua</label>
-                                <input v-model="form.street" type="text" class="form-control rounded" required>
+                                <input v-model="form.street" name="street" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="mb-3">
                                 <label class="form-label">Numero</label>
-                                <input v-model="form.number" type="text" class="form-control rounded" required>
+                                <input v-model="form.number" name="number" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Bairro</label>
-                                <input v-model="form.district" type="text" class="form-control rounded" required>
+                                <input v-model="form.district" name="district" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">Cidade</label>
-                                <input v-model="form.city" type="text" class="form-control rounded" required>
+                                <input v-model="form.city" name="city" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">Estado</label>
-                                <select v-model="form.state" class="form-select rounded" aria-label="Default select example" required>
+                                <select v-model="form.state" name="state" class="form-select rounded"
+                                        aria-label="Default select example" required>
                                     <option selected></option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option v-for="state in states" :key="state.id" :value="state.id">
+                                        {{ state.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -71,20 +87,22 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">País</label>
-                                <input v-model="form.country" type="text" class="form-control rounded" required>
+                                <input v-model="form.country" name="country" type="text" class="form-control rounded"
+                                       required>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">CEP</label>
-                                <input v-model="form.cep" type="text" class="form-control rounded" required>
+                                <input type="text" name="cep" v-mask="'00000-000'" v-model="form.cep" class="form-control rounded">
                             </div>
                         </div>
 
                         <div class="col-md-3 mb-3">
                             <div class="form-check">
-                                <input v-model="form.payment" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input v-model="form.payment" name="payment" class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Pago
                                 </label>
@@ -93,7 +111,7 @@
 
                     </div>
 
-                    <button type="button" class="btn btn-outline-primary font-semibold">Cadastrar</button>
+                    <button type="submit" class="btn btn-outline-primary font-semibold">Cadastrar</button>
                 </form>
             </div>
         </div>
@@ -102,8 +120,15 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
+import {Inertia} from "@inertiajs/inertia"
+import {ref} from "vue"
 
-const form = {
+defineProps({
+    states: Array,
+    errors: Object
+})
+
+const form = ref({
     name: '',
     email: '',
     cpf: '',
@@ -115,6 +140,10 @@ const form = {
     country: '',
     cep: '',
     payment: false,
+})
+
+function submit() {
+    Inertia.post(route('users.store'), form.value)
 }
 
 </script>

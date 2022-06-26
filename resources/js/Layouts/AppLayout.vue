@@ -4,7 +4,7 @@
 
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand font-bold"> Kirc Digital </a>
+                <Link :href="route('dashboard')" class="navbar-brand font-bold"> Kirc Digital </Link>
                 <div class="dropstart">
                     <div class="btn-group dropstart">
                         <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -26,7 +26,7 @@
 
 <script setup>
 import {Inertia} from '@inertiajs/inertia';
-import {Head} from '@inertiajs/inertia-vue3';
+import {Head, Link} from '@inertiajs/inertia-vue3';
 
 defineProps({
     title: String,

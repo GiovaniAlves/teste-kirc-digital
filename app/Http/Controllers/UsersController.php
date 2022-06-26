@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Models\Address;
+use App\Models\City;
+use App\Models\State;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UsersController extends Controller
@@ -10,11 +16,11 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        return Inertia::render('Dashboard');
     }
 
     /**
@@ -24,18 +30,41 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Users/Create');
+        $states = State::all();
+
+        return Inertia::render('Users/Create', ['states' => $states]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreUserRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'cpf' => $request->cpf,
+            'payment' => $request->payment
+        ]);
+
+        $city = City::create([
+            'state_id' => $request->state,
+            'name' => $request->city
+        ]);
+
+        Address::create([
+            'user_id' => $user->id,
+            'city_id' => $city->id,
+            'street' => $request->street,
+            'number' => $request->number,
+            'district' => $request->district,
+            'cep' => $request->cep
+        ]);
+
+        return Redirect::route('users.index')->with('message', 'Usuário Criado com Sucesso!');
     }
 
     /**
