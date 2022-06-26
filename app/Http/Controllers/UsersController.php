@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -111,20 +112,36 @@ class UsersController extends Controller
             'payment' => $request->payment
         ]);
 
-        $address = Address::where('user_id', $user->id)->first();
-        $city = City::where('id', $address->city_id)->first();
+        // Se não tiver um endereço cadastrado um novo
+        if (!$address = Address::where('user_id', $user->id)->first()) {
+            $city = City::create([
+                'state_id' => $request->state,
+                'name' => $request->city
+            ]);
 
-        $address->update([
-            'street' => $request->street,
-            'number' => $request->number,
-            'district' => $request->district,
-            'cep' => $request->cep
-        ]);
+            Address::create([
+                'user_id' => $user->id,
+                'city_id' => $city->id,
+                'street' => $request->street,
+                'number' => $request->number,
+                'district' => $request->district,
+                'cep' => $request->cep
+            ]);
+        } else {
+            $city = City::where('id', $address->city_id)->first();
 
-        $city->update([
-            'state_id' => $request->state,
-            'name' => $request->city
-        ]);
+            $address->update([
+                'street' => $request->street,
+                'number' => $request->number,
+                'district' => $request->district,
+                'cep' => $request->cep
+            ]);
+
+            $city->update([
+                'state_id' => $request->state,
+                'name' => $request->city
+            ]);
+        }
 
         return Redirect::route('users.index')->with('message', 'Usuário Atualizado com Sucesso!');
     }

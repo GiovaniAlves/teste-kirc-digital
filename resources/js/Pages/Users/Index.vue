@@ -50,8 +50,17 @@
                     <td>
                         <Link :href="route('users.edit', {id: user.id})" class="btn btn-success btn-sm ml-1"><i class="bi bi-pencil"></i> Editar</Link>
                         <button @click.prevent="deleteUser(user.id)" class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
-                        <button class="btn btn-secondary btn-sm ml-1"><i class="bi bi-dash"></i> Desativar</button>
-                        <button class="btn btn-success btn-sm ml-1"><i class="bi bi-bookmark-check"></i> Ativar
+                        <button
+                            :class="['btn btn-sm ml-1', {'btn-success': !user.active}, {'btn-secondary': user.active}]"
+                        >
+                            <i :class="['bi', {'bi-bookmark-plus': !user.active}, {'bi-dash': user.active}]"></i>
+                            {{ user.active ? 'Desativar' : 'Ativar' }}
+                        </button>
+                        <button
+                            :class="['btn btn-sm ml-1', {'btn-success': !user.payment}, {'btn-warning': user.payment}]"
+                        >
+                            <i :class="['bi', {'bi-hand-thumbs-up': !user.payment}, {'bi-hand-thumbs-down': user.payment}]"></i>
+                            {{ user.payment ? 'Não Pago' : 'Pago' }}
                         </button>
                     </td>
                 </tr>
