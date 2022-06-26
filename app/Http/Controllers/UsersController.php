@@ -164,6 +164,11 @@ class UsersController extends Controller
         return Redirect::back()->with('message', 'Usuário Deletado com Sucesso!');
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateStatus(Request $request, $id)
     {
         $user = User::find($id);
@@ -173,5 +178,19 @@ class UsersController extends Controller
 
         return Redirect::back()->with('message', 'Status Atualizado com Sucesso!');
     }
-    
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePayment(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->update([
+            'payment' => $request->statusPayment
+        ]);
+
+        return Redirect::back()->with('message', 'Pagamento Atualizado com Sucesso!');
+    }
 }

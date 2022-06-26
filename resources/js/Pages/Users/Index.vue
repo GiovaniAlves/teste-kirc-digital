@@ -58,7 +58,8 @@
                             {{ user.active ? 'Desativar' : 'Ativar' }}
                         </button>
                         <button
-                            :class="['btn btn-sm ml-1', {'btn-success': !user.payment}, {'btn-warning': user.payment}]"
+                            @click.prevent="updatePayment(user.id, !user.payment)"
+                            :class="['btn btn-sm ml-1', {'btn-success': !user.payment}, {'btn-danger': user.payment}]"
                         >
                             <i :class="['bi', {'bi-hand-thumbs-up': !user.payment}, {'bi-hand-thumbs-down': user.payment}]"></i>
                             {{ user.payment ? 'Não Pagar' : 'Pagar' }}
@@ -119,13 +120,15 @@ function deleteUser(id) {
 }
 
 function updateStatus(id, status) {
-    Inertia.post(route('users.update.status', {id: id}), {
+    Inertia.post(route('users.update.status', {id}), {
         status
     })
 }
 
-function updatePayment() {
-
+function updatePayment(id, statusPayment) {
+    Inertia.post(route('users.update.payment', {id}), {
+        statusPayment
+    })
 }
 
 </script>
