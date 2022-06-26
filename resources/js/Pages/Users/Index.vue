@@ -3,7 +3,7 @@
         {{ $page.props.flash.message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
+
     <div class="card">
 
         <div class="card-header">
@@ -23,41 +23,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td><span class="badge text-bg-danger">Não</span></td>
-                    <td>Ativo</td>
-                    <td>
-                        <button class="btn btn-success btn-sm ml-1"><i class="bi bi-pencil"></i> Editar</button>
-                        <button class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
-                        <button class="btn btn-secondary btn-sm ml-1"><i class="bi bi-dash"></i> Desativar</button>
-                        <button class="btn btn-success btn-sm ml-1"><i class="bi bi-bookmark-check"></i> Ativar
-                        </button>
+                <tr v-for="user in users.data">
+                    <th
+                        :class="[{'text-decoration-line-through': !user.active}]"
+                        scope="row"
+                    >
+                        {{ user.id }}
+                    </th>
+                    <td :class="[{'text-decoration-line-through': !user.active}]">
+                        {{ user.name }}
                     </td>
-                </tr>
-                <tr>
-                    <th class="text-decoration-line-through" scope="row">2</th>
-                    <td class="text-decoration-line-through">Jacob</td>
-                    <td class="text-decoration-line-through">Thornton</td>
-                    <td><span class="text-decoration-line-through badge text-bg-success">Sim</span></td>
-                    <td class="text-decoration-line-through">Desativado</td>
-                    <td>
-                        <button class="btn btn-success btn-sm ml-1"><i class="bi bi-pencil"></i> Editar</button>
-                        <button class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
-                        <button class="btn btn-warning btn-sm ml-1"><i class="bi bi-hand-thumbs-down"></i> Não Pago
-                        </button>
-                        <button class="btn btn-success btn-sm ml-1"><i class="bi bi-hand-thumbs-up"></i> Pago
-                        </button>
+                    <td :class="[{'text-decoration-line-through': !user.active}]">
+                        {{ user.email }}
                     </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td><span class="badge text-bg-success">Sim</span></td>
-                    <td>Ativo</td>
+                    <td>
+                        <span
+                            :class="['badge', {'text-bg-danger': !user.payment}, {'text-bg-success': user.payment},
+                                        {'text-decoration-line-through': !user.active}]"
+                        >
+                            {{ user.payment ? 'Sim' : 'Não' }}
+                        </span>
+                    </td>
+                    <td :class="[{'text-decoration-line-through': !user.active}]">
+                        {{ user.active ? 'Ativo' : 'Desativado' }}
+                    </td>
                     <td>
                         <button class="btn btn-success btn-sm ml-1"><i class="bi bi-pencil"></i> Editar</button>
                         <button class="btn btn-danger btn-sm ml-1"><i class="bi bi-trash3"></i> Excluir</button>
@@ -73,19 +62,24 @@
         <div class="card-footer flex justify-end">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                    <Link :href="users.prev_page_url" class="page-item">
+                        <a class="page-link" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                    </Link>
+                    <Link
+                        v-for="(link, index) in links"
+                        :key="index"
+                        :href="link.url"
+                        class="page-item"
+                    >
+                        <a class="page-link">{{ link.label }}</a>
+                    </Link>
+                    <Link :href="users.next_page_url" class="page-item">
+                        <a class="page-link" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
-                    </li>
+                    </Link>
                 </ul>
             </nav>
         </div>
@@ -94,4 +88,17 @@
 
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3'
+import {computed} from "vue"
+
+const props = defineProps({
+    users: Object
+})
+
+const links = computed(() => {
+    const cleanLinks = [...props.users.links]
+    cleanLinks.pop()
+    cleanLinks.shift()
+    return cleanLinks
+})
+
 </script>
