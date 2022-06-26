@@ -15,4 +15,6 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [UsersController::class, 'index'])->name('dashboard');
     Route::resource('/users', UsersController::class);
+    Route::post('/users/update-status/{id}', [UsersController::class, 'updateStatus'])->name('users.update.status');
+    Route::post('/users/update-payment/{id}', [UsersController::class, 'updatePayment'])->name('users.update.payment');
 });

@@ -163,4 +163,15 @@ class UsersController extends Controller
 
         return Redirect::back()->with('message', 'Usuário Deletado com Sucesso!');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->update([
+           'active' => $request->status
+        ]);
+
+        return Redirect::back()->with('message', 'Status Atualizado com Sucesso!');
+    }
+    
 }
