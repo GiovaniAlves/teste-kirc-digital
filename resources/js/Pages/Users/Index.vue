@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <button class="btn btn-primary">Cadastrar Cliente</button>
+            <Link class="btn btn-primary" :href="route('users.create')" >Cadastrar Usuário</Link>
         </div>
         <!-- /.card-header -->
         <div class="card-body px-3 py-2 table-responsive p-0">
@@ -86,6 +86,6 @@
     </div>
 </template>
 
-<script>
-
+<script setup>
+import { Link } from '@inertiajs/inertia-vue3'
 </script>

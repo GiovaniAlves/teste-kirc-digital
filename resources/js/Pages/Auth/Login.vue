@@ -51,9 +51,9 @@
 </template>
 
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue';
-import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3'
+import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue'
+import JetValidationErrors from '@/Jetstream/ValidationErrors.vue'
 
 defineProps({
     canResetPassword: Boolean,

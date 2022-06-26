@@ -1,10 +1,10 @@
 <template>
     <AppLayout title="Dashboard">
-        <Customers />
+        <Users />
     </AppLayout>
 </template>
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-import Customers from './Customers/Index.vue'
+import Users from './Users/Index.vue'
 </script>
